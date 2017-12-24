@@ -79,6 +79,13 @@ func genPrjName(defaultPrj string, c *do.Context) (prj string) {
 	return prj
 }
 
+func run(filename string, c *do.Context) {
+
+	//force goimports
+	c.Run(fmt.Sprintf("goimports -w %s", filename))
+	c.Run(fmt.Sprintf("go run %s", filename))
+}
+
 const DEFAULT_PRJ_NAME = "play"
 
 func tasks(p *do.Project) {
@@ -99,22 +106,17 @@ func tasks(p *do.Project) {
 			filename = getLatestFileName(prj)
 		}
 		fmt.Printf("Run: %s\n", filename)
-		//force goimports
-		c.Run(fmt.Sprintf("goimports -w %s", filename))
-		c.Run(fmt.Sprintf("go run %s", filename))
+		run(filename, c)
 	})
 
 	p.Task("play", nil, func(c *do.Context) {
 		if c.FileEvent != nil {
 			fmt.Printf("Do: %s\n", c.FileEvent.Path)
-			//force goimports
-			c.Run(fmt.Sprintf("goimports -w %s", c.FileEvent.Path))
-			c.Run(fmt.Sprintf("go run %s", c.FileEvent.Path))
+			run(c.FileEvent.Path, c)
 		}
 	}).Src("*.go")
 
 	p.Task("new", nil, func(c *do.Context) {
-		// defalut is play
 		prj := genPrjName(DEFAULT_PRJ_NAME, c)
 
 		// defalut is {{prj}].go
