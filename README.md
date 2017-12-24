@@ -24,13 +24,20 @@ godo new -- ${NAME}
 ```
 * Run
 ```
-godo run -- ${NAME}
-> search ${NAME}.${MAX_OF_N}.go in ${PLAY_DIR_NAME}
+godo run
+> search play.${MAX_OF_N}.go in ${PLAY_DIR_NAME}
 > goimports -w ${SEARCHED}.go
 > go run ${SEARCHED}.go
 ```
 ```
+godo run -- ${NAME}
+> search ${NAME}.${MAX_OF_N}.go in ${PLAY_DIR_NAME}
+...
+> go run ${SEARCHED}.go
+```
+```
 godo run -- ${GO_FILENAME}
+...
 > run ${GO_FILENAME}
 ```
 * Watch
